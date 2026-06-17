@@ -161,7 +161,7 @@ def get_sorted_by_date():
     conn.close()
     return rows
 
-def get_highest_expense(month_rep):
+def get_highest_expense_monthly(month_rep):
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -178,7 +178,7 @@ def get_highest_expense(month_rep):
     conn.close()
     return row
 
-def get_lowest_expense(month_rep):
+def get_lowest_expense_monthly(month_rep):
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -189,6 +189,38 @@ def get_lowest_expense(month_rep):
     ORDER BY amount ASC
     LIMIT 1
     """, (month_rep,))
+
+    row = cursor.fetchone()
+
+    conn.close()
+    return row
+
+def get_highest_expense():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT merchant, amount
+    FROM expenses
+    ORDER BY amount DESC
+    LIMIT 1
+    """)
+
+    row = cursor.fetchone()
+
+    conn.close()
+    return row
+
+def get_lowest_expense():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT merchant, amount
+    FROM expenses
+    ORDER BY amount ASC
+    LIMIT 1
+    """)
 
     row = cursor.fetchone()
 
