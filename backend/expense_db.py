@@ -1,4 +1,4 @@
-from db import get_connection
+from backend.db import get_connection
 
 def add_expenses(merchant,amount,date,category):
     conn=get_connection()
@@ -226,3 +226,35 @@ def get_lowest_expense():
 
     conn.close()
     return row
+
+def get_expense_by_id(expense_id):
+    conn=get_connection()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+    SELECT * FROM expenses
+    WHERE id=? """,(expense_id,))
+    
+    rows=cursor.fetchall()
+    conn.close()
+    return rows
+
+def search_expenses(category=None,merchant=None):
+    conn=get_connection()
+    cursor=conn.cursor()
+
+    query="SELECT * FROM expenses WHERE 1=1"
+    value=[]
+
+    if category:
+        query+="AND category=?"
+        value.append(category)
+
+    if merchant:
+        query+="AND merchant=?"
+        value.append(merchant)
+
+    cursor.execute(query,value)
+    rows=cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]#converts rows 

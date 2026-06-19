@@ -1,4 +1,4 @@
-from db import get_connection
+from backend.db import get_connection
 
 def set_budget(category,budget):
     conn=get_connection()

@@ -1,7 +1,7 @@
 #expenses is a list containing dictionaries expense
 # from csv_file import save_expenses, load_expenses
 # from budget_file import save_budgets, load_budgets
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # type: ignore
 
 from expense_db import (
     add_expenses,
@@ -28,7 +28,7 @@ from budget_db import (
     set_budget,
     check_budget,
 )
-
+from models import Expense
 from db import init_db
 
 
