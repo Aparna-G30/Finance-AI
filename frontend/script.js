@@ -37,6 +37,11 @@ async function loadData() {
             <td>${expense.amount}</td>
             <td>${expense.date}</td>
             <td>${expense.category}</td>
+            <td>
+                <button onclick="deleteExpense(${expense.id})">
+                    Delete
+                </button>
+            </td>
         </tr>
         `;
     });
@@ -81,3 +86,15 @@ form.addEventListener("submit", async function(event){
     alert(data.message);
 
 });
+async function deleteExpense(expenseId){
+
+    await fetch(
+        `http://127.0.0.1:8000/expenses/${expenseId}`,
+        {
+            method: "DELETE"
+        }
+    );
+
+    loadData();
+
+}
