@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Finance AI Dashboard</h1>
+
+    <div class="summary">
+
+        <div class="card">
+            <h3>Total Spending</h3>
+            <p id="total-spending">₹0</p>
+        </div>
+
+        <div class="card">
+            <h3>Transactions</h3>
+            <p id="transactions">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Average Expense</h3>
+            <p id="average-expense">₹0</p>
+        </div>
+
+    </div>
+    <h2>Monthly Report</h2>
+
+        <input type="month" id="month-select">
+
+        <button onclick="loadData()">
+            Load Report
+        </button>
+
+    <h2>Expenses</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Merchant</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+
+        <tbody id="expense-table">
+        </tbody>
+    </table>
+    <h2>Add Expense</h2>
+
+<form id="expense-form">
+
+    <input
+        type="text"
+        id="merchant"
+        placeholder="Merchant"
+        required
+    >
+
+    <input
+        type="number"
+        id="amount"
+        placeholder="Amount"
+        required
+    >
+
+    <input
+        type="date"
+        id="date"
+        required
+    >
+
+    <input
+        type="text"
+        id="category"
+        placeholder="Category"
+        required
+    >
+
+    <button type="submit">
+        Add Expense
+    </button>
+
+</form>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

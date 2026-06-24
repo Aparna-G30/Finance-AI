@@ -31,8 +31,17 @@ from .models import Expense
 from .models import ExpenseResponse
 from typing import List
 from fastapi import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 app=FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
@@ -146,11 +155,11 @@ def get_lowest_expense_api():
     lowest=get_lowest_expense()
     return{"Highest Expense":lowest}
 
-@app.get("/reports/monthly",tags=["Reports"])
+@app.get("/reports/monthl-wise",tags=["Reports"])
 def get_monthly_expenses_api():
     return get_monthly_expenses()
 
-@app.get("/report/month-wise",tags=["Reports"])
+@app.get("/reports/monthly",tags=["Reports"])
 def get_monthly_report_api(month_rep:str):
     monthly_expense=get_monthly_report(month_rep)
     
@@ -160,7 +169,7 @@ def get_monthly_report_api(month_rep:str):
         total+=expense["amount"]
 
     if len(monthly_expense) > 0:
-        average = total / len(monthly_expense)
+        average = int(total / len(monthly_expense))
     else:
         average = 0
     
@@ -178,9 +187,9 @@ def get_monthly_report_api(month_rep:str):
 
     return{
         "month":month_rep,
-        "total_speding":total,
+        "total_spending":total,
         "number_of_transactions":len(monthly_expense),
-        "Averge_expense":average,
+        "average_expense":average,
         "category_breakdown": category_totals,
         "expenses": monthly_expense
     }
