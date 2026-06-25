@@ -240,6 +240,7 @@ def get_expense_by_id(expense_id):
     return rows
 
 def search_expenses(category=None,merchant=None):
+
     conn=get_connection()
     cursor=conn.cursor()
 
@@ -258,3 +259,20 @@ def search_expenses(category=None,merchant=None):
     rows=cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]#converts rows 
+
+def get_expense_by_category_month(category, month_rep):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT *
+    FROM expenses
+    WHERE category = ?
+    AND substr(date,1,7) = ?
+    """, (category, month_rep))
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return rows

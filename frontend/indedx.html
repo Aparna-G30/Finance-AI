@@ -89,6 +89,37 @@
 
 </form>
 
+    <h3>Filter by Category</h3>
+
+        <select id="category-filter">
+            <option value="">Select</option>
+            <option value="Food">Food</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Travel">Travel</option>
+            <option value="Bills">Bills</option>
+            <option value="Entertainment">Entertainment</option>
+    </select>
+    <h3>Category Expenses</h3>
+
+    <h4 id="category-total">
+        Total: ₹0
+    </h4>
+    <h4 id="category-transactions">
+        Transactions: 0
+    </h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Merchant</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+
+        <tbody id="category-table">
+        </tbody>
+    </table>
+
     <script src="script.js"></script>
 
 </body>

@@ -19,6 +19,7 @@ from .expense_db import (
     get_lowest_expense,
     get_expense_by_id,
     search_expenses,
+    get_expense_by_category_month,
 
 )
 from .budget_db import (
@@ -59,6 +60,11 @@ def about():
 def greet(name:str):
     return{"message": f"Hello {name}"}
 
+@app.get("/expenses/filter")
+def get_expense_by_category_api(category:str):
+    expense=get_expense_by_category(category)
+    return expense
+
 @app.get("/expenses/{expense_id}",tags=["Expenses"], response_model=ExpenseResponse)#
 def get_expenses_by_id_api(expense_id:int):
     expense= get_expense_by_id(expense_id)
@@ -87,6 +93,8 @@ def get_all_expense_api():
 #         }
 #     }
 
+
+
 @app.post("/expense",tags=["Expenses"],status_code=201)
 def add_expense_api(expense:Expense):
     add_expenses(
@@ -113,10 +121,7 @@ def delete_expense_api(expense_id:int):
     delete_expenses(expense_id)
     return {"message":"Expense deleted successfully"}
 
-@app.get("/expenses/ctegory")
-def get_expense_by_category_api(category:str):
-    expense=get_expense_by_category(category)
-    return expense
+
 
 @app.get("/expenses/merchant")
 def get_expense_by_merchant_api(merchant:str):
@@ -224,3 +229,13 @@ def get_budget_api(category: str):
 def check_budget_api(category: str):
     result = check_budget(category)
     return result
+
+@app.get("/expenses/filter/month")
+def get_expense_by_category_month_api(
+    category:str,
+    month_rep:str
+):
+    return get_expense_by_category_month(
+        category,
+        month_rep
+    )

@@ -9,12 +9,15 @@ monthInput.value =
 async function loadData() {
 
     const month = monthInput.value;
+    
+    // const selectedCategory=document.getElementById("category-filter").value;
+    // console.log(selectedCategory);
+    
+const response = await fetch(
+    `http://127.0.0.1:8000/reports/monthly?month_rep=${month}`
+);
 
-    const response = await fetch(
-        `http://127.0.0.1:8000/reports/monthly?month_rep=${month}`
-    );
-
-    const data = await response.json();
+const data = await response.json();
     currentExpenses = data.expenses;
 
     console.log(data);
@@ -147,6 +150,63 @@ function editExpense(id){
         expense.category;
 
     editingExpenseId = id;
+
+
+}
+
+const categoryFilter =
+    document.getElementById("category-filter");
+categoryFilter.addEventListener(
+    "change",
+    loadCategoryData
+);
+async function loadCategoryData(){
+
+    const category =
+        document.getElementById("category-filter").value;
+
+    const month = monthInput.value;
+
+    const response = await fetch(
+        `http://127.0.0.1:8000/expenses/filter/month?category=${category}&month_rep=${month}`
+    );
+
+    const expenses = await response.json();
+    console.log(expenses);
+    
+    
+    const table =
+        document.getElementById("category-table");
+
+    let total=0;
+
+    table.innerHTML = "";
+    expenses.forEach(expense => {
+
+        total+= expense.amount;
+        
+        table.innerHTML += `
+        <tr>
+            <td>${expense.merchant}</td>
+            <td>${expense.amount}</td>
+            <td>${expense.date}</td>
+        </tr>
+        `;
+
+    });
+    document.getElementById("category-total").textContent =
+    "Total: ₹" + total;
+
+    if(category === ""){
+    table.innerHTML = "";
+
+    document.getElementById("category-total").textContent =
+        "Total: ₹0";
+    
+    return;
+}
+document.getElementById("category-transactions").textContent =
+        "Transactions: " + expenses.length;
 
 
 }
