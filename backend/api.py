@@ -98,8 +98,14 @@ def add_expense_api(expense:Expense):
     return {"message":"Expense was added successfully"}
 
 @app.put("/expenses/{expense_id}",tags=["Expenses"])
-def edit_expense_api(expense_id:int ,merchant:str ,amount:int ,date:str,category:str):
-    update_expenses(expense_id,merchant,amount,date,category)
+def edit_expense_api(expense_id:int ,expense:Expense):
+    update_expenses(
+        expense_id,
+        expense.merchant,
+        expense.amount,
+        expense.date,
+        expense.category
+    )
     return {"message":"Expense updted successfully"}
 
 @app.delete("/expenses/{expense_id}",tags=["Expenses"],status_code=204)

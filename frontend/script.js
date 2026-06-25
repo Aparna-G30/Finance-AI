@@ -1,3 +1,5 @@
+let currentExpenses = [];
+let editingExpenseId = null;
 const monthInput = document.getElementById("month-select");
 
 const today = new Date();
@@ -13,6 +15,8 @@ async function loadData() {
     );
 
     const data = await response.json();
+    currentExpenses = data.expenses;
+
     console.log(data);
     document.getElementById("total-spending").textContent =
         "₹" + data.total_spending;
@@ -38,6 +42,10 @@ async function loadData() {
             <td>${expense.date}</td>
             <td>${expense.category}</td>
             <td>
+                <button onclick="editExpense(${expense.id})">
+                    Edit
+                </button>
+
                 <button onclick="deleteExpense(${expense.id})">
                     Delete
                 </button>
@@ -68,23 +76,44 @@ form.addEventListener("submit", async function(event){
         category: document.getElementById("category").value
     };
 
-    const response = await fetch(
-        "http://127.0.0.1:8000/expense",
-        {
-            method: "POST",
+    if(editingExpenseId === null){
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+        // CREATE NEW EXPENSE
 
-            body: JSON.stringify(expense)
-        }
-    );
+        await fetch(
+            "http://127.0.0.1:8000/expense",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(expense)
+            }
+        );
 
-    const data = await response.json();
+    }
+    else
+    {
 
-    alert(data.message);
+        // UPDATE EXISTING EXPENSE
 
+        await fetch(
+            `http://127.0.0.1:8000/expenses/${editingExpenseId}`,
+            {
+                method:"PUT",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(expense)
+            }
+        );
+
+        editingExpenseId = null;
+    }
+
+    form.reset();
+
+    loadData();
 });
 async function deleteExpense(expenseId){
 
@@ -96,5 +125,28 @@ async function deleteExpense(expenseId){
     );
 
     loadData();
+
+}
+
+function editExpense(id){
+
+    const expense = currentExpenses.find(
+        expense => expense.id === id
+    );
+
+    document.getElementById("merchant").value =
+        expense.merchant;
+
+    document.getElementById("amount").value =
+        expense.amount;
+
+    document.getElementById("date").value =
+        expense.date;
+
+    document.getElementById("category").value =
+        expense.category;
+
+    editingExpenseId = id;
+
 
 }
