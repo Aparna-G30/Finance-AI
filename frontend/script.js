@@ -2,6 +2,15 @@ let currentExpenses = [];
 let editingExpenseId = null;
 const monthInput = document.getElementById("month-select");
 
+monthInput.addEventListener(
+    "change",
+    () => {
+        console.log("Month changed");
+        loadData();
+        loadCategoryData();
+    }
+);
+
 const today = new Date();
 
 monthInput.value =
@@ -156,9 +165,18 @@ function editExpense(id){
 
 const categoryFilter =
     document.getElementById("category-filter");
+
+// console.log(document.getElementById("month-select"));
+// const monthInput =
+//     document.getElementById("month-select");
+
 categoryFilter.addEventListener(
     "change",
-    loadCategoryData
+    () => {
+        console.log("Month changed");
+        loadData();
+        loadCategoryData();
+    }
 );
 async function loadCategoryData(){
 
