@@ -37,7 +37,7 @@ def update_expenses(expense_id,merchant,amount,date,category):
 
     cursor.execute("""
     UPDATE expenses
-    SET merchant=?,amount=?,date=?,category=?
+    SET merchant=?,amount=?,date=?,category=?,
     WHERE id=?
      """,(merchant,amount,date,category,expense_id))
     

@@ -3,7 +3,7 @@
 # from budget_file import save_budgets, load_budgets
 import matplotlib.pyplot as plt # type: ignore
 
-from expense_db import (
+from backend.expense_db import (
     add_expenses,
     get_all_expenses,
     delete_expenses,
@@ -23,13 +23,13 @@ from expense_db import (
     get_lowest_expense,
 
 )
-from budget_db import (
+from backend.budget_db import (
     get_budget,
     set_budget,
     check_budget,
 )
-from models import Expense
-from db import init_db
+# from models import Expense
+from backend.db import init_db
 
 
 def display_expense(expense):

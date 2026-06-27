@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .expense_db import (
+from backend.expense_db import (
     add_expenses,
     get_all_expenses,
     delete_expenses,
@@ -76,7 +76,7 @@ def get_expenses_by_id_api(expense_id:int):
         )
     return expense
 
-@app.get("/expenses",tags=["Expenses"], response_model=List[ExpenseResponse])#
+@app.get("/expenses",tags=["Expenses"])#, response_model=List[ExpenseResponse]
 def get_all_expense_api():
     return get_all_expenses()
 

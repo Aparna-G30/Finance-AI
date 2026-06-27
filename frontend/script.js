@@ -25,7 +25,11 @@ async function loadData() {
 const response = await fetch(
     `http://127.0.0.1:8000/reports/monthly?month_rep=${month}`
 );
-
+if (!response.ok) {
+    const error = await response.json();
+    alert(error.detail[0].msg);
+    return;
+}
 const data = await response.json();
     currentExpenses = data.expenses;
 
@@ -82,13 +86,17 @@ form.addEventListener("submit", async function(event){
         amount: Number(
             document.getElementById("amount").value
         ),
-
+        
         date: document.getElementById("date").value,
 
-        category: document.getElementById("category").value
+        category: document.getElementById("category").value,
+
+        // note: document.getElementById("note").value
+
     };
 
-    if(editingExpenseId === null){
+    if(editingExpenseId === null)
+    {
 
         // CREATE NEW EXPENSE
 
@@ -102,28 +110,44 @@ form.addEventListener("submit", async function(event){
                 body:JSON.stringify(expense)
             }
         );
+        
 
     }
     else
     {
 
-        // UPDATE EXISTING EXPENSE
-
         await fetch(
             `http://127.0.0.1:8000/expenses/${editingExpenseId}`,
             {
-                method:"PUT",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify(expense)
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+            },
+            body: JSON.stringify(expense)
             }
         );
 
+        const amountError =
+            document.getElementById("amount-error");
+
+        if (expense.amount <= 0) {
+            amountError.textContent =
+             "Amount must be greater than 0.";
+
+            return;
+        }
+        amountError.textContent = "";
         editingExpenseId = null;
     }
-
+    // console.log("Restarting form...");
     form.reset();
+
+    const today = new Date().toISOString().split("T")[0];
+    console.log(today);
+
+    document.getElementById("date").value = today;
+
+    console.log(document.getElementById("date").value);
 
     loadData();
 });
@@ -157,6 +181,9 @@ function editExpense(id){
 
     document.getElementById("category").value =
         expense.category;
+
+    // document.getElementById("note").value =
+    // expense.note;
 
     editingExpenseId = id;
 
@@ -208,6 +235,7 @@ async function loadCategoryData(){
             <td>${expense.merchant}</td>
             <td>${expense.amount}</td>
             <td>${expense.date}</td>
+            <td>${expense.note || "-"}</td>
         </tr>
         `;
 
